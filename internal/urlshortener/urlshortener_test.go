@@ -2,13 +2,13 @@ package urlshortener
 
 import (
 	"fmt"
+	"os"
 	"testing"
-	// "github.com/stretchr/testify/assert"
 )
 
-// func TestMain(m *testing.M) {
-// 	os.Exit(m.Run())
-// }
+func TestMain(m *testing.M) {
+	os.Exit(m.Run())
+}
 
 func assertEqual[T comparable](t *testing.T, expected T, actual T) {
 	t.Helper()
