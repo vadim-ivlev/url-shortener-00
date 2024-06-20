@@ -1,22 +1,28 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+
+	"github.com/vadim-ivlev/url-shortener/internal/server"
 )
 
 func main() {
 
+	fmt.Println("Server starting at http://localhost:8080/")
+
 	// Создать мультиплексор
 	mux := http.NewServeMux()
 
-	// Добавить обработчик для корневого URL
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request). {
-		method := r.Method
-		// Эндпоинт с методом `POST`
-		if method == "POST" {
-			shortenedURL := getShortenedURL(r)
-
-		w.Write([]byte("Hello, World! " + method + "\n"))
+	// Зарегистрировать обработчики
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			server.ShortenURLHandler(w, r)
+		} else if r.Method == http.MethodGet {
+			server.RedirectHandler(w, r)
+		} else {
+			http.Error(w, "Invalid request method", http.StatusBadRequest)
+		}
 	})
 
 	// Запустить сервер на порту 8080
